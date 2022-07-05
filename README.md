@@ -2,7 +2,7 @@
 
 A playground to explore Ecto, using SQLite3, maybe Postgres later.
 
-The playground is created in the following steps:
+The playground is created in the following steps, according to https://hexdocs.pm/ecto/getting-started.html:
 
 1. `mix new ecto_playground --sup`
 2. Specify the dependencies in `mix.exs`
@@ -10,4 +10,6 @@ The playground is created in the following steps:
 4. Configure database in `config/config.exs`
 5. Fix the Adapter type in `lib/ecto_playground/repo.ex`
 6. Create database by running `mix ecto.create`
+
+The test suits follow the instructions from https://hexdocs.pm/ecto/testing-with-ecto.html
 

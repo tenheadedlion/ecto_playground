@@ -22,7 +22,8 @@ defmodule EctoPlayground.X do
 
     many_to_many(:ys, EctoPlayground.Y,
       join_through: "xs_ys",
-      on_replace: :mark_as_invalid
+      # on_replace: :mark_as_invalid
+      on_replace: :delete
     )
   end
 
@@ -68,7 +69,7 @@ defmodule EctoPlayground do
       }) do
     case @repo.get_by(EctoPlayground.X, name: x) do
       nil -> %EctoPlayground.X{}
-      x -> x |> @repo.preload(:ys) |> IO.inspect()
+      x -> x |> @repo.preload(:ys)
     end
     |> EctoPlayground.X.changeset(%{name: x, ys: y})
     |> @repo.insert_or_update()
