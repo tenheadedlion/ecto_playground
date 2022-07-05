@@ -10,7 +10,7 @@ defmodule EctoPlayground.Application do
     children = [
       # Starts a worker by calling: EctoPlayground.Worker.start_link(arg)
       # {EctoPlayground.Worker, arg}
-      EctoPlaygroud.Repo
+      EctoPlayground.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
