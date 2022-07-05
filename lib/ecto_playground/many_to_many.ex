@@ -1,6 +1,7 @@
 defmodule ManyToMany.Y do
   use Ecto.Schema
-
+  import Ecto.Query
+  @repo EctoPlayground.Repo
   schema "ys" do
     field(:name, :string)
   end
@@ -8,6 +9,24 @@ defmodule ManyToMany.Y do
   def changeset(struct, params \\ %{}) do
     struct
     |> Ecto.Changeset.cast(params, [:name])
+  end
+
+  def parse(tags) do
+    (tags || "")
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
+  end
+
+  def count() do
+    from(y in ManyToMany.Y,
+      select: count(y.id)
+    )
+    |> @repo.one()
+  end
+
+  def all() do
+    @repo.all(ManyToMany.Y)
   end
 end
 
@@ -34,7 +53,15 @@ defmodule ManyToMany.X do
     |> Ecto.Changeset.put_assoc(:ys, handle_y(params))
   end
 
-  defp handle_y(params) do
+  def changeset(struct, ys, params) do
+    struct
+    |> Ecto.Changeset.cast(params, [:name])
+    |> Ecto.Changeset.unique_constraint(:name)
+    |> Ecto.Changeset.validate_format(:name, ~r/^[^\d]/)
+    |> Ecto.Changeset.put_assoc(:ys, ys)
+  end
+
+  def handle_y(params) do
     (params[:ys] || "")
     |> String.split(",")
     |> Enum.map(&String.trim/1)
@@ -42,11 +69,11 @@ defmodule ManyToMany.X do
     |> insert_ys()
   end
 
-  defp insert_ys([]) do
+  def insert_ys([]) do
     []
   end
 
-  defp insert_ys(names) do
+  def insert_ys(names) do
     maps =
       Enum.map(
         names,
