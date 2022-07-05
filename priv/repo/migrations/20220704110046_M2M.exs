@@ -1,4 +1,4 @@
-defmodule EctoPlayground.Repo.Migrations.M2M do
+defmodule EctoPlayground.Repo.Migrations.ManyToMany do
   use Ecto.Migration
 
   def change do
